@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>趣味は何ですか？ — HOBI Quest</title>
+<style>
+:root{
+  --bg1:#e6f8ff; --bg2:#eef7ff; --card:#ffffff;
+  --primary:#0288d1; --muted:#6b7280; --table-border:#91b9fe;
+}
+*{box-sizing:border-box}
+html,body{
+  height:100%;margin:0;
+  font-family:"Poppins","Noto Sans JP",sans-serif;
+  background:linear-gradient(180deg,var(--bg1),var(--bg2));
+  display:flex;align-items:center;justify-content:center;
+}
+.app{
+  width:96%;max-width:750px;background:var(--card);
+  border-radius:14px;padding:18px;
+  box-shadow:0 14px 40px rgba(0,0,0,0.1);
+}
+h1{color:var(--primary);font-size:1.3rem;margin:0}
+.subtitle{font-size:13px;color:var(--muted);margin-bottom:10px}
+button{
+  background:var(--primary);color:white;border:none;
+  padding:10px 16px;border-radius:10px;font-size:14px;
+  cursor:pointer;transition:0.2s;
+}
+button:hover{opacity:0.9}
+button.secondary{background:#fff;border:1px solid #bde1ff;color:var(--primary)}
+.table{
+  width:100%;border-collapse:collapse;margin-top:8px;
+}
+.table th,.table td{
+  padding:10px;border:1px solid var(--table-border);
+  vertical-align:middle;
+}
+.table th{background:#e6f7ff;color:var(--primary);text-align:left;width:35%;}
+.table td{background:#ffffff}
+.screen{display:none}
+.screen.active{display:block}
+.center{text-align:center}
+.avatar-list{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:6px 0}
+.avatar{
+  width:80px;height:80px;border-radius:10px;overflow:hidden;
+  border:2px solid transparent;cursor:pointer;
+}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar.active{border-color:var(--primary);transform:translateY(-4px)}
+.table th label{font-weight:600}
+.option{
+  display:block;padding:8px;border:1px solid #e8f6ff;
+  border-radius:8px;margin:5px 0;background:#fff;cursor:pointer;
+}
+.option.correct{background:#e8fff0;border-color:#8ae0a2}
+.option.wrong{background:#ffe8e8;border-color:#ffb2b2}
+@media(max-width:520px){
+  .table th,.table td{font-size:13px;padding:8px}
+  button{font-size:13px;padding:8px 10px}
+}
+footer{text-align:center;font-size:12px;color:var(--muted);margin-top:10px}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <h1>しゅみはなんですか？ — Hobi Kamu Apa?</h1>
+
+  <!-- ================== MAIN MENU ================== -->
+  <div id="menu" class="screen active">
+    <table class="table">
+      <tr>
+        <th><label for="playerName">Nama Pemain</label></th>
+        <td><input id="playerName" type="text" placeholder="Masukkan nama" style="width:100%;padding:8px;border-radius:8px;border:1px solid #dcefff"></td>
+      </tr>
+      <tr>
+        <th>Pilih Avatar</th>
+        <td>
+          <div class="avatar-list" id="avatarList"></div>
+          <label>
+            <input type="file" id="fileInput" accept="image/jpeg,image/png" style="display:none">
+            <button id="btnUpload" class="secondary">📷 Upload Foto (JPG/PNG)</button>
+          </label>
+        </td>
+      </tr>
+      <tr>
+        <th>Menu</th>
+        <td class="center">
+          <button id="btnLearn">📘 Mode Belajar</button>
+          <button id="btnHow">🧭 Tata Cara</button>
+          <button id="btnStart">▶️ Mulai Kuis</button>
+          <button id="btnLB" class="secondary">🏆 Leaderboard</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ================== TATA CARA ================== -->
+  <div id="how" class="screen">
+    <h2 style="color:var(--primary)">🧭 Tata Cara Bermain</h2>
+    <table class="table">
+      <thead><tr><th>Langkah</th><th>Penjelasan</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Pelajari kosakata di Mode Belajar (tabel gambar & arti).</td></tr>
+        <tr><td>2</td><td>Masukkan nama & pilih avatar (atau upload foto).</td></tr>
+        <tr><td>3</td><td>Mulai kuis dan pilih jawaban yang sesuai dengan gambar.</td></tr>
+        <tr><td>4</td><td>Jawaban benar = 20 poin. Total 5 soal (maks 100 poin).</td></tr>
+        <tr><td>5</td><td>Skor tersimpan di Leaderboard otomatis.</td></tr>
+      </tbody>
+    </table>
+    <div class="center"><button class="secondary" onclick="goMenu()">⬅️ Kembali</button></div>
+  </div>
+
+  <!-- ================== MODE BELAJAR ================== -->
+  <div id="learn" class="screen">
+    <h2 style="color:var(--primary)">📘 Mode Belajar — Kosakata しゅみ</h2>
+    <table class="table">
+      <thead><tr><th>Gambar</th><th>Hiragana/Katakana</th><th>Arti</th></tr></thead>
+      <tbody>
+        <tr><td><img src="IKON CEKLIS (3).png" width="60"></td><td>サッカー</td><td>Sepak bola</td></tr>
+        <tr><td><img src="BAR JAWABAN.png" width="60"></td><td>りょうり</td><td>Memasak</td></tr>
+        <tr><td><img src="IKON CEKLIS (4).png" width="60"></td><td>つり</td><td>Memancing</td></tr>
+        <tr><td><img src="IKON CEKLIS (5).png" width="60"></td><td>うたう</td><td>Bernyanyi</td></tr>
+        <tr><td><img src="IKON CEKLIS (6).png" width="60"></td><td>ダンス</td><td>Dance</td></tr>
+      </tbody>
+    </table>
+    <div class="center"><button class="secondary" onclick="goMenu()">⬅️ Kembali</button></div>
+  </div>
+
+  <!-- ================== QUIZ ================== -->
+  <div id="quiz" class="screen">
+    <h2 style="color:var(--primary)">📝 Kuis — Tebak Hobi</h2>
+    <table class="table">
+      <tbody id="quizBody"></tbody>
+    </table>
+    <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:6px">
+      <div>👤 <span id="playerLabel">Player</span></div>
+      <div>🏆 Skor: <span id="scoreLabel">0</span></div>
+    </div>
+    <div class="center"><button id="btnQuit" class="secondary">❌ Keluar</button></div>
+  </div>
+
+  <!-- ================== LEADERBOARD ================== -->
+  <div id="leaderboard" class="screen">
+    <h2 style="color:var(--primary)">🏆 Leaderboard</h2>
+    <table class="table">
+      <thead><tr><th>Rank</th><th>Nama</th><th>Avatar</th><th>Skor</th><th>Tanggal</th></tr></thead>
+      <tbody id="lbBody"></tbody>
+    </table>
+    <div class="center" style="margin-top:10px;display:flex;flex-direction:column;gap:6px;align-items:center">
+      <button class="secondary" onclick="goMenu()">⬅️ Kembali</button>
+      <button style="background:#ff6b6b" onclick="resetLB()">🗑️ Hapus Semua Data Leaderboard</button>
+    </div>
+  </div>
+
+  <footer>Media Ajar Digital By : Rizaruuu</footer>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+function goMenu(){show('menu')}
+function show(id){['menu','how','learn','quiz','leaderboard'].forEach(x=>$(x).style.display='none');$(id).style.display='block'}
+const avatars=[
+  'IKON CEKLIS (1).png',
+  'IKON CEKLIS (2).png',
+];
+let state={name:'Player',avatar:avatars[0],photo:null,score:0,idx:0};
+const KEY='hobi_lb_final';
+function initAvatars(){
+  const list=$('avatarList');
+  avatars.forEach(url=>{
+    const d=document.createElement('div');
+    d.className='avatar';
+    d.innerHTML=`<img src="${url}">`;
+    d.onclick=()=>{document.querySelectorAll('.avatar').forEach(a=>a.classList.remove('active'));d.classList.add('active');state.avatar=url;state.photo=null};
+    list.appendChild(d);
+  });
+  list.children[0].classList.add('active');
+}
+initAvatars();
+
+$('btnUpload').onclick=()=>$('fileInput').click();
+$('fileInput').addEventListener('change',e=>{
+  const f=e.target.files[0];
+  if(!f)return;
+  if(!/^image\/(jpeg|png)$/.test(f.type)){alert('Gunakan JPG/PNG');return;}
+  const r=new FileReader();
+  r.onload=ev=>{
+    const img=new Image();
+    img.onload=()=>{
+      const c=document.createElement('canvas');const mw=400;const s=Math.min(1,mw/img.width);
+      c.width=img.width*s;c.height=img.height*s;
+      c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+      const durl=c.toDataURL('image/jpeg',0.8);
+      const custom=document.createElement('div');custom.className='avatar active';custom.innerHTML=`<img src="${durl}">`;
+      document.querySelectorAll('.avatar').forEach(a=>a.classList.remove('active'));
+      const list=$('avatarList');list.appendChild(custom);
+      custom.onclick=()=>{document.querySelectorAll('.avatar').forEach(a=>a.classList.remove('active'));custom.classList.add('active');state.photo=durl;};
+      state.photo=durl;
+    };img.src=ev.target.result;
+  };r.readAsDataURL(f);
+});
+
+$('btnHow').onclick=()=>show('how');
+$('btnLearn').onclick=()=>show('learn');
+$('btnLB').onclick=()=>{fillLB();show('leaderboard');};
+$('btnStart').onclick=()=>{state.name=$('playerName').value||'Player';startQuiz();};
+$('btnQuit').onclick=()=>{if(confirm('Keluar kuis?'))goMenu();};
+
+const quizData=[
+  {q:'しゅみは(sepak bola)をします',img:'IKON CEKLIS (3).png',opt:['サッカー','りょうり','よみます','うたう'],a:'サッカー'},
+  {q:'(Memasak)はしゅみです。',img:'BAR JAWABAN.png',opt:['りょうり','かきます','のぼります','えいがをみる'],a:'りょうり'},
+  {q:'かれのしゅみは(Memancing)です',img:'IKON CEKLIS (4).png',opt:['えいがをみる','うたう','りょこう','つり'],a:'つり'},
+  {q:'A-さんのしゅみはへやで(Bernyanyi)です',img:'IKON CEKLIS (5).png',opt:['うたう','りょうり','よみます','かきます'],a:'うたう'},
+  {q:'なかほんのしゅみは(Dance)です。',img:'IKON CEKLIS (6).png',opt:['りょうり','よみます','ダンス','かきます'],a:'ダンス'}
+]
+function startQuiz(){
+  state.score=0;state.idx=0;show('quiz');
+  $('playerLabel').textContent=state.name;
+  $('scoreLabel').textContent=state.score;
+  renderQ();
+}
+function renderQ(){
+  const b=$('quizBody');b.innerHTML='';
+  if(state.idx>=quizData.length){endQuiz();return;}
+  const q=quizData[state.idx];
+  const tr=document.createElement('tr');
+  tr.innerHTML=`<td style="text-align:center;width:50%"><img src="${q.img}" width="120"></td><td><b>${q.q}</b><div id="opts"></div></td>`;
+  b.appendChild(tr);
+  const opts=$('opts');
+  q.opt.forEach(o=>{
+    const div=document.createElement('div');
+    div.className='option';
+    div.textContent=o;
+    div.onclick=()=>check(div,o,q.a);
+    opts.appendChild(div);
+  });
+}
+function check(div,o,a){
+  document.querySelectorAll('.option').forEach(x=>x.onclick=null);
+  if(o===a){div.classList.add('correct');state.score+=20;}
+  else{
+    div.classList.add('wrong');
+    document.querySelectorAll('.option').forEach(x=>{if(x.textContent===a)x.classList.add('correct');});
+  }
+  $('scoreLabel').textContent=state.score;
+  setTimeout(()=>{state.idx++;renderQ();},800);
+}
+function endQuiz(){
+  const entry={n:state.name,av:state.photo||state.avatar,s:state.score,t:Date.now()};
+  const arr=JSON.parse(localStorage.getItem(KEY)||'[]');arr.push(entry);
+  arr.sort((a,b)=>b.s-a.s);
+  localStorage.setItem(KEY,JSON.stringify(arr.slice(0,30)));
+  fillLB();show('leaderboard');
+}
+function fillLB(){
+  const arr=JSON.parse(localStorage.getItem(KEY)||'[]');
+  const b=$('lbBody');b.innerHTML='';
+  if(arr.length===0){b.innerHTML='<tr><td colspan="5" class="center">Belum ada data</td></tr>';return;}
+  arr.forEach((e,i)=>{
+    const d=new Date(e.t).toLocaleString();
+    b.innerHTML+=`<tr><td>${i+1}</td><td>${e.n}</td><td><img src="${e.av}" width="50" style="border-radius:8px"></td><td>${e.s}</td><td>${d}</td></tr>`;
+  });
+}
+function resetLB(){
+  if(confirm('Hapus semua data leaderboard?')){localStorage.removeItem(KEY);fillLB();}
+}
+</script>
+</body>
+</html>
